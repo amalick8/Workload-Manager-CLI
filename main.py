@@ -82,4 +82,42 @@ def menu():
     print("4. Course Breakdown")
     print("5. Exit")
 
+def main():
+    manager = WorkloadManager()
 
+    while True:
+        menu()
+        choice = input("Choose option: ").strip()
+
+        if choice == "1":
+            name = input("Assignment name: ")
+            course = input("Course: ")
+            due = input("Due date (YYYY-MM-DD): ")
+            hours = input("Estimated hours: ")
+            manager.add_task(name, course, due, hours)
+            print("Task added.")
+
+        elif choice == "2":
+            for t in manager.sorted_tasks():
+                p = manager.priority(t)
+                print(f"{t.due_date} | {p} | {t.course} | {t.name} | {t.hours} hrs")
+
+        elif choice == "3":
+            daily = manager.daily_workload()
+            print(f"Estimated Daily Workload: {daily:.2f} hrs")
+            if manager.overload_detected():
+                print("Warning: Heavy workload detected.")
+
+        elif choice == "4":
+            breakdown = manager.course_breakdown()
+            for c, h in breakdown.items():
+                print(f"{c}: {h:.2f} hrs")
+
+        elif choice == "5":
+            break
+
+        else:
+            print("Invalid option.")
+
+if __name__ == "__main__":
+    main()
